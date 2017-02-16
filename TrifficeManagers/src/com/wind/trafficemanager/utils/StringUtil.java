@@ -1,4 +1,4 @@
-package com.wind.trafficemanager.util;
+package com.wind.trafficemanager.utils;
 import android.util.Log;
 /**
  * 流量数据格式转换（保留小数点后两位）
@@ -8,9 +8,8 @@ import android.util.Log;
 public class StringUtil {
 	public static String  format (long num)
 	{
-		java.text.DecimalFormat   df   =new   java.text.DecimalFormat("0.00");  
-		Log.i("xb1", "ss"+num);
 		 float result = num;
+		 String roundFormat;
 		 String suffix ="B";
 		if(result>1024){
 			result = result /1024;
@@ -24,9 +23,23 @@ public class StringUtil {
 			result = result /1024;
 			suffix = "GB";
 		}
-		Log.i("xb1", result+suffix);
+
+
+
+		if (result>=100)
+		{
+			roundFormat = "%.0f";
+		}
+		else if (result<100&&result>0)
+		{
+			roundFormat = "%.2f";
+		}else {
+			roundFormat = "%.1f";
+		}
+		String total = String.format(roundFormat, result);
+		Log.i("xb1", total+suffix);
 		//Log.i("xxxb",df.format(result)+suffix);  
-		return df.format(result)+suffix;
+		return total+suffix;
 	}
 	
 	  

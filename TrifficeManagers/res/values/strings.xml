@@ -1,6 +1,11 @@
 <resources>
-
-    <string name="app_name">trifficeManager</string>
-	<string name ="missing_required_permission">权限拒绝</string>
-	<string name="system_title">Android操作系统</string>
+    <string name="app_name">TrafficeManager</string>
+    <string name ="missing_required_permission">权限拒绝</string>
+    <string name="system_title">Android操作系统</string>
+    <string name="system_app">Android系统应用</string>
+    <string name="wifi">wifi</string>
+    <string name="mobile">mobile</string>
+    <string name="application_name">应用名称</string>
+    <string name="today_data">今日流量</string>
+    <string name="empty">今日还没有使用流量哦</string>
 </resources>

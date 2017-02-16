@@ -2,9 +2,9 @@ package com.wind.trafficemanager.entity;
 
 import java.util.List;
 
-import com.wind.trafficemanager.util.NetworkStatsHelper;
-import com.wind.trafficemanager.util.StringUtil;
-import com.wind.trafficemanager.util.Wind;
+import com.wind.trafficemanager.utils.NetworkStatsHelper;
+import com.wind.trafficemanager.utils.StringUtil;
+import com.wind.trafficemanager.utils.Wind;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -42,25 +42,8 @@ public class AppdataInfo
 
 	public AppdataInfo()
 	{
-		/*
-		 * this.mContext = context; this.mInfo = info; mPm =
-		 * mContext.getPackageManager(); final String packageName
-		 * =info.applicationInfo.packageName; //this.mComponentName = new
-		 * ComponentName(packageName, // info.activityInfo.name); //statsHelper
-		 * = new NetworkStatsHelper(mContext); Uid = info.applicationInfo.uid;
-		 * mTitle =mPm.getApplicationLabel(info.applicationInfo).toString();
-		 * mAppDrawable =mPm.getApplicationIcon(info.applicationInfo);
-		 * mAppDrawable = zoomDrawable(mAppDrawable,192,192);
-		 */
 
-		// totalMobile =
-		// StringUtil.getTotal(statsHelper.getPackageRxBytesMobileTotal(info.applicationInfo.uid));
-		// totalWifi =
-		// StringUtil.getTotal(statsHelper.getPackageRxBytesWifiTotal(info.applicationInfo.uid));
 	}
-
-	//
-
 	public long getTotalMobile()
 	{
 		return totalMobile;
@@ -128,7 +111,7 @@ public class AppdataInfo
 
 	public void setmAppDrawable(Drawable mAppDrawable)
 	{
-		this.mAppDrawable = zoomDrawable(mAppDrawable, 192, 192);
+		this.mAppDrawable = zoomDrawable(mAppDrawable, 100, 100);
 	}
 
 	public String getmTitle()

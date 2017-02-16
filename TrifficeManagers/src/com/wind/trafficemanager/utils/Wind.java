@@ -1,4 +1,4 @@
-package com.wind.trafficemanager.util;
+package com.wind.trafficemanager.utils;
 
 public class Wind {
 	public final static String NAME = "wind/";

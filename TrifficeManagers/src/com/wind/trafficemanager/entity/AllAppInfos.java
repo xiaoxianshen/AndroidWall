@@ -3,21 +3,19 @@ package com.wind.trafficemanager.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wind.trafficemanager.TrifficeManagerActivity;
-import com.wind.trafficemanager.util.NetworkStatsHelper;
-import com.wind.trafficemanager.util.TimeUtils;
-import com.wind.trafficemanager.util.Wind;
-import com.wind.trifficemanager.R;
+import com.wind.trafficemanager.R;
+import com.wind.trafficemanager.utils.NetworkStatsHelper;
 
-import android.Manifest.permission;
+import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.pm.ResolveInfo;
+import com.wind.trafficemanager.utils.StringUtil;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
-
+import com.wind.trafficemanager.utils.TimeUtils;
 public class AllAppInfos
 {
 	public static final String APP_LOCK_PACKAGE_NAME = "com.wind.trifficemanager";
@@ -42,22 +40,21 @@ public class AllAppInfos
 		pm = mContext.getPackageManager();
 		long resultTotalWifi = 0;
 		long resultTotalMobile = 0;
-		int uid = 0;
 		List<AppdataInfo> lists = new ArrayList<>();
 		Log.i("sss", list.size() + "");
+        List<AppdataInfo> listss = new ArrayList<>();
+        if(list.size()!=0)
+        {
 		AppdataInfo a = new AppdataInfo();
-
+        a.setUid(1000);
+		a.setmAppDrawable(pm.getDefaultActivityIcon());
+		a.setmTitle(mContext.getResources().getString(R.string.system_title));
 		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i).getUid() < 10000) {
 				resultTotalMobile += list.get(i).getTotalMobile();
 				resultTotalWifi += list.get(i).getTotalWifi();
-				uid = 1000;
 				a.setTotalMobile(resultTotalMobile);
 				a.setTotalWifi(resultTotalWifi);
-				a.setUid(uid);
-				a.setmAppDrawable(pm.getDefaultActivityIcon());
-				a.setmTitle(mContext.getResources().getString(
-						R.string.system_title));
 				continue;
 			}
 			AppdataInfo b = new AppdataInfo();
@@ -78,12 +75,7 @@ public class AllAppInfos
 			lists.add(b);
 		}
 		lists.add(a);
-		for (AppdataInfo ap : lists) {
-			Log.i("xx", "1="+ap.toString());
-		}
-		List<AppdataInfo> listss = new ArrayList<>();
 		for (int i = 0; i < lists.size(); i++) {
-
 			for (int j = i + 1; j < lists.size(); j++) {
 				if (lists.get(i).getUid() == lists.get(j).getUid()) {
 					lists.get(i).setTotalMobile(
@@ -96,19 +88,73 @@ public class AllAppInfos
 			}
 			listss.add(lists.get(i));
 		}
-
 		for (int i = listss.size() - 1; i >= 0; i--) {
 			for (int j = i - 1; j >= 0; j--) {
 				if (listss.get(i).getUid() == listss.get(j).getUid()) {
 					listss.remove(i);
-					Log.d("xx", "i=" + i);
 				}
 			}
 		}
-		for (AppdataInfo ap : listss) {
-			Log.i("xx", ap.toString());
-		}
+        }
 		return listss;
+	}
+	public List<AppdataInfo> getInstallAppliction() {
+		List<AppdataInfo> installApplictionList = new ArrayList<AppdataInfo>();
+		pm = mContext.getPackageManager();
+		List<ApplicationInfo> installedApplications = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+		AppdataInfo appdataInfo = null;
+
+		long s1 = System.currentTimeMillis();
+		for (ApplicationInfo applicationInfo : installedApplications) {
+
+			if (applicationInfo != null && PackageManager.PERMISSION_GRANTED == pm
+					.checkPermission(Manifest.permission.INTERNET,
+							applicationInfo.packageName)) {
+
+				if (applicationInfo.uid > 10000) {
+					AppdataInfo b = new AppdataInfo();
+					b.setUid(applicationInfo.uid);
+					try {
+						b.setmAppDrawable(pm.getApplicationIcon(pm
+								.getPackagesForUid(applicationInfo.uid)[0]));
+						b.setmTitle(pm.getApplicationLabel(
+								pm.getApplicationInfo(
+										pm.getPackagesForUid(applicationInfo.uid)[0],
+										PackageManager.GET_META_DATA)).toString());
+						installApplictionList.add(b);
+					} catch (NameNotFoundException e) {
+						b.setmAppDrawable(pm.getDefaultActivityIcon());
+					}
+
+				}
+
+			}
+
+		}
+		AppdataInfo a = new AppdataInfo();
+		a.setUid(1000);
+		a.setmAppDrawable(pm.getDefaultActivityIcon());
+		a.setmTitle(mContext.getResources().getString(
+				R.string.system_app));
+		installApplictionList.add(a);
+		return installApplictionList;
+	}
+
+	public long getTodayData(int type)
+	{
+		long data =0;
+		switch (type)
+		{
+			case 1:
+				data = networkStatsHelper.getAllTodayMobile(TimeUtils.getTimesmorning(),System.currentTimeMillis());
+				break;
+			case 2:
+				data = networkStatsHelper.getAllTodayWifi(TimeUtils.getTimesmorning(),System.currentTimeMillis());
+				break;
+			default:break;
+		}
+		return  data;
+
 	}
 
 }

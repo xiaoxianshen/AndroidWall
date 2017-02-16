@@ -1,4 +1,4 @@
-package com.wind.trafficemanager.util;
+package com.wind.trafficemanager.utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,7 +56,20 @@ public class NetworkStatsHelper
 		}
 		return bucket.getTxBytes() + bucket.getRxBytes();
 	}
-
+    public long getAllTodayWifi(long startTime ,long endTime)
+	{
+		NetworkStats.Bucket bucket;
+		try {
+			bucket = networkStatsManager.querySummaryForDevice(
+					ConnectivityManager.TYPE_WIFI, "", startTime,
+					endTime);
+			Log.i("xb4", bucket.getUid() + "");
+		} catch (RemoteException e) {
+			return -1;
+		} finally {
+		}
+		return bucket.getTxBytes() + bucket.getRxBytes();
+	}
 	/**
 	 * 返回某时间段各个应用流量使用情况 int networkType 网络类型（wifi或者mobile） String subscriberId
 	 * sim卡subid（当为wifi时为“”，当为mobile时通过getSubscriberId()获取） long startTime 开始时间戳
@@ -317,24 +330,6 @@ public class NetworkStatsHelper
 		}
 		return wifiDataInfosList;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	boolean isExistInA(AppdataInfo b)
 	{

@@ -1,4 +1,4 @@
-package com.wind.trafficemanager.util;
+package com.wind.trafficemanager.utils;
 
 import java.util.HashMap;
 import java.util.Iterator;
